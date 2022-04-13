@@ -8,6 +8,11 @@ input_stream: "input_video"
 
 # CPU image. (ImageFrame)
 output_stream: "output_video"
+output_stream: "output_detections"
+output_stream: "output_landmarks"
+output_stream: "output_palm_rects"
+output_stream: "output_hand_rects"
+output_stream: "output_hand_rects_from_landmarks"
 
 # Generates side packet cotaining max number of hands to detect/track.
 node {
@@ -43,4 +48,36 @@ node {
   input_stream: "NORM_RECTS:0:multi_palm_rects"
   input_stream: "NORM_RECTS:1:multi_hand_rects"
   output_stream: "IMAGE:output_video"
+}
+
+# Streams to get results of detection and landmark
+node {
+  calculator: "PassThroughCalculator"
+  input_stream: "multi_palm_detections"
+  output_stream: "output_detections"
+}
+
+node {
+  calculator: "PassThroughCalculator"
+  input_stream: "multi_hand_landmarks"
+  output_stream: "output_landmarks"
+}
+
+
+node {
+  calculator: "PassThroughCalculator"
+  input_stream: "multi_palm_rects"
+  output_stream: "output_palm_rects"
+}
+
+node {
+  calculator: "PassThroughCalculator"
+  input_stream: "multi_hand_rects"
+  output_stream: "output_hand_rects"
+}
+
+node {
+  calculator: "PassThroughCalculator"
+  input_stream: "multi_hand_rects_from_landmarks"
+  output_stream: "output_hand_rects_from_landmarks"
 }
